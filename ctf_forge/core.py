@@ -42,9 +42,26 @@ class Runner:
         self.dry_run = dry_run
         self.failed: List[str] = []
         self.env = os.environ.copy()
-        extra = [str(HOME / ".local" / "bin"), str(HOME / "go" / "bin")]
-        self.env["PATH"] = os.pathsep.join(extra + [self.env.get("PATH", "")])
         self.env.setdefault("DEBIAN_FRONTEND", "noninteractive")
+        self.base_path = self.env.get("PATH", "")
+        self.extra_paths: List[str] = []
+        self.refresh_path()
+
+    def refresh_path(self) -> None:
+        """Add user-level bin directories (pipx, go, gems, Arch perl) to PATH."""
+        candidates = [HOME / ".local" / "bin", HOME / "go" / "bin",
+                      Path("/usr/bin/vendor_perl")]
+        ruby = shutil.which("ruby", path=self.env.get("PATH"))
+        if ruby:
+            try:
+                out = subprocess.run([ruby, "-e", "puts Gem.user_dir"], capture_output=True,
+                                     text=True, timeout=15).stdout.strip()
+                if out:
+                    candidates.append(Path(out) / "bin")
+            except (OSError, subprocess.SubprocessError):
+                pass
+        self.extra_paths = [str(p) for p in candidates if p.is_dir()]
+        self.env["PATH"] = os.pathsep.join(self.extra_paths + [self.base_path])
 
     @property
     def is_root(self) -> bool:

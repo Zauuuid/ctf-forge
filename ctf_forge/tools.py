@@ -11,12 +11,12 @@ BASE: Dict[str, List[str]] = {
     "arch": ["base-devel", "git", "curl", "python", "python-pip", "python-pipx", "go",
              "ruby", "nodejs", "npm", "binutils", "file", "perl-image-exiftool", "unzip",
              "p7zip", "openssl", "imagemagick", "sox", "strace", "ltrace", "gdb", "nmap",
-             "whois", "bind", "qrencode", "zbar", "xxd"],
+             "whois", "bind", "qrencode", "zbar", "xxd", "openbsd-netcat"],
     "debian": ["build-essential", "git", "curl", "python3", "python3-pip", "python3-venv",
                "pipx", "golang-go", "ruby", "ruby-dev", "nodejs", "npm", "binutils", "file",
                "xxd", "libimage-exiftool-perl", "unzip", "p7zip-full", "openssl",
                "imagemagick", "sox", "strace", "ltrace", "gdb", "nmap", "whois", "dnsutils",
-               "qrencode", "zbar-tools"],
+               "qrencode", "zbar-tools", "netcat-openbsd"],
     "macos": ["git", "curl", "python", "pipx", "go", "ruby", "node", "binutils", "exiftool",
               "p7zip", "openssl", "imagemagick", "sox", "nmap", "whois", "bind", "qrencode",
               "zbar"],
@@ -24,14 +24,21 @@ BASE: Dict[str, List[str]] = {
 
 TOOLS: Dict[str, List[str]] = {
     "arch": ["binwalk", "foremost", "hashcat", "john", "radare2", "wireshark-cli",
-             "steghide", "gobuster", "ffuf", "checksec", "nikto", "fcrackzip", "sqlmap"],
+             "gobuster", "ffuf", "checksec", "nikto", "fcrackzip", "sqlmap"],
     "debian": ["binwalk", "foremost", "hashcat", "john", "radare2", "tshark", "steghide",
                "gobuster", "ffuf", "checksec", "nikto", "fcrackzip", "sqlmap"],
     "macos": ["binwalk", "foremost", "hashcat", "john-jumbo", "radare2", "wireshark",
               "steghide", "gobuster", "ffuf", "checksec", "nikto"],
 }
 
-AUR_ONLY: Dict[str, List[str]] = {"arch": ["bkcrack"], "debian": [], "macos": ["bkcrack"]}
+AUR_ONLY: Dict[str, List[str]] = {"arch": ["bkcrack", "steghide"], "debian": [],
+                                   "macos": ["bkcrack"]}
+
+# Binaries installed with `go install` when no package provided them.
+GO_FALLBACK: Dict[str, str] = {
+    "ffuf": "github.com/ffuf/ffuf/v2@latest",
+    "gobuster": "github.com/OJ/gobuster/v3@latest",
+}
 
 FULL_EXTRA: Dict[str, List[str]] = {
     "arch": ["ghidra", "sagemath", "wireshark-qt", "audacity", "sonic-visualiser"],
@@ -47,7 +54,6 @@ PIPX_TOOLS: List[Tuple[str, str]] = [
     ("pwntools", "pwn"),
     ("volatility3", "vol"),
     ("sherlock-project", "sherlock"),
-    ("theHarvester", "theHarvester"),
 ]
 
 VERIFY: List[str] = [
@@ -144,6 +150,8 @@ def install_zsteg(r: Runner) -> None:
         r.say("  = zsteg")
     elif not r.run(["gem", "install", "--user-install", "zsteg"]):
         r.fail("gem zsteg")
+    else:
+        r.refresh_path()
 
 
 def install_all(r: Runner, distro: str, full: bool = False, aur: bool = True,
@@ -170,6 +178,17 @@ def install_all(r: Runner, distro: str, full: bool = False, aur: bool = True,
         if aur:
             for name in AUR_ONLY[distro]:
                 install_pkg(r, distro, name, aur)
+        elif AUR_ONLY[distro]:
+            r.say("  ~ skipped (AUR): {}".format(", ".join(AUR_ONLY[distro])))
+        for binary, module in GO_FALLBACK.items():
+            if not r.dry_run and r.have(binary):
+                continue
+            if r.have("go") or r.dry_run:
+                r.say("  go fallback for {}".format(binary))
+                if r.run(["go", "install", module]) and not r.dry_run:
+                    r.refresh_path()
+                    if r.failed and r.failed[-1] == "package {}".format(binary):
+                        r.failed.pop()
     if "pipx" not in skip:
         r.step("Python tools (pipx)")
         r.run(["pipx", "ensurepath"], quiet=True)

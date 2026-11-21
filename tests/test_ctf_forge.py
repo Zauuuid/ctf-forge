@@ -55,7 +55,9 @@ class ToolsTests(unittest.TestCase):
 
     def test_no_aur_skips_aur_only_packages(self):
         _, out = run_cli("tools", "install", "--dry-run", "--distro", "arch", "--no-aur")
-        self.assertNotIn("bkcrack", out.split("Installed tools")[0])
+        self.assertNotIn("--noconfirm bkcrack", out)
+        self.assertNotIn("yay -S", out)
+        self.assertIn("skipped (AUR)", out)
 
 
 class SkillsTests(unittest.TestCase):
@@ -104,10 +106,10 @@ class SkillsTests(unittest.TestCase):
                          ["ctf-crypto", "ctf-web", "solve-challenge"])
 
     def test_dry_run_changes_nothing(self):
-        before = list(self.tmp.rglob("*"))
+        before = {str(p) for p in self.tmp.rglob("*")}
         run = Runner(dry_run=True)
         skills.install(run, self.target, str(self.upstream), store=self.store)
-        self.assertEqual(before, list(self.tmp.rglob("*")))
+        self.assertEqual(before, {str(p) for p in self.tmp.rglob("*")})
 
 
 class MemoryTests(unittest.TestCase):
