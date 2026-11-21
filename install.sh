@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # CTF Arsenal bootstrap.
 #   Local:   bash install.sh [options]
-#   Remote:  curl -fsSL https://raw.githubusercontent.com/ZauuuiD/ctf-arsenal/main/install.sh | bash
+#   Remote:  curl -fsSL https://raw.githubusercontent.com/Zauuuid/ctf-arsenal/main/install.sh | bash
 # Options are passed to scripts/setup.py (see --help).
 set -euo pipefail
 
-REPO="https://github.com/ZauuuiD/ctf-arsenal.git"
+REPO="https://github.com/Zauuuid/ctf-arsenal.git"
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" 2>/dev/null && pwd || true)"
 
 if ! command -v python3 >/dev/null 2>&1; then

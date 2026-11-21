@@ -10,7 +10,7 @@ call, and an [Obsidian](https://obsidian.md) vault that Claude uses as long-term
 Supported: Arch/EndeavourOS, Debian/Ubuntu/Kali, macOS. On Windows, use WSL2 (Ubuntu).
 
 ```bash
-git clone https://github.com/ZauuuiD/ctf-arsenal.git
+git clone https://github.com/Zauuuid/ctf-arsenal.git
 cd ctf-arsenal
 bash install.sh
 ```
@@ -18,7 +18,7 @@ bash install.sh
 Or in one line:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/ZauuuiD/ctf-arsenal/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/Zauuuid/ctf-arsenal/main/install.sh | bash
 ```
 
 Run it as a normal user. It calls `sudo` where needed and is safe to re-run.
