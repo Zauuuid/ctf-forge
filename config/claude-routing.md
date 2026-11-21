@@ -1,4 +1,4 @@
-## FlagForge routing
+## CTF Forge routing
 
 Two toolsets are installed. Use each for what it does best.
 

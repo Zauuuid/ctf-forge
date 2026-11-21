@@ -1,6 +1,6 @@
 # Third-party projects
 
-FlagForge does not bundle the projects below. The installer downloads them from their
+CTF Forge does not bundle the projects below. The installer downloads them from their
 original repositories at install time. Each keeps its own license and authorship.
 
 | Project | Author | License | Source |

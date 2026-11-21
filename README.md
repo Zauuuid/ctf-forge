@@ -1,4 +1,4 @@
-﻿# FlagForge
+﻿# CTF Forge
 
 One installer that sets up an AI-assisted CTF environment for [Claude Code](https://claude.ai/code):
 the [ctf-skills](https://github.com/ljagiello/ctf-skills) knowledge base, the
@@ -10,15 +10,15 @@ call, and an [Obsidian](https://obsidian.md) vault that Claude uses as long-term
 Supported: Arch/EndeavourOS, Debian/Ubuntu/Kali, macOS. On Windows, use WSL2 (Ubuntu).
 
 ```bash
-git clone https://github.com/Zauuuid/flagforge.git
-cd flagforge
+git clone https://github.com/Zauuuid/ctf-forge.git
+cd ctf-forge
 bash install.sh
 ```
 
 Or in one line:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Zauuuid/flagforge/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/Zauuuid/ctf-forge/main/install.sh | bash
 ```
 
 Run it as a normal user. It calls `sudo` where needed and is safe to re-run.
@@ -40,7 +40,7 @@ Run it as a normal user. It calls `sudo` where needed and is safe to re-run.
 2. Python tools through pipx: xortool, hashid, pwntools, volatility3, ROPGadget and others.
    RsaCtfTool and zsteg are installed separately.
 3. Claude Code CLI.
-4. ctf-skills, cloned to `~/.flagforge/upstream` and linked into `~/.claude/skills`.
+4. ctf-skills, cloned to `~/.ctf-forge/upstream` and linked into `~/.claude/skills`.
 5. The ctf-kit plugin and `ctf` CLI, plus a workspace at `~/ctf`.
 6. Obsidian and a vault from [`vault-template`](vault-template).
 7. A routing block in `~/.claude/CLAUDE.md` that tells Claude which toolset to use

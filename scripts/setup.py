@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""FlagForge installer.
+"""CTF Forge installer.
 
 Sets up, on Arch/EndeavourOS, Debian/Ubuntu/Kali or macOS:
   * system packages and CTF tooling
@@ -25,7 +25,7 @@ from pathlib import Path
 
 HOME = Path.home()
 ROOT = Path(__file__).resolve().parent.parent
-FORGE_HOME = HOME / ".flagforge"
+FORGE_HOME = HOME / ".ctf-forge"
 UPSTREAM_DIR = FORGE_HOME / "upstream"
 CLAUDE_DIR = HOME / ".claude"
 
@@ -33,8 +33,8 @@ CTF_SKILLS_REPO = "https://github.com/ljagiello/ctf-skills.git"
 CTF_KIT_MARKETPLACE = "MysterionRise/ctf-kit"
 CTF_KIT_GIT = "git+https://github.com/MysterionRise/ctf-kit.git"
 
-BLOCK = ("# >>> flagforge >>>", "# <<< flagforge <<<")
-MD_BLOCK = ("<!-- >>> flagforge >>> -->", "<!-- <<< flagforge <<< -->")
+BLOCK = ("# >>> ctf-forge >>>", "# <<< ctf-forge <<<")
+MD_BLOCK = ("<!-- >>> ctf-forge >>> -->", "<!-- <<< ctf-forge <<< -->")
 
 FAILED: list[str] = []
 DRY = False
@@ -467,7 +467,7 @@ def verify() -> None:
 
 def main() -> int:
     global DRY, DISTRO
-    ap = argparse.ArgumentParser(description="FlagForge installer")
+    ap = argparse.ArgumentParser(description="CTF Forge installer")
     ap.add_argument("--full", action="store_true", help="also install heavy extras")
     ap.add_argument("--dry-run", action="store_true", help="print actions, change nothing")
     ap.add_argument("--update", action="store_true", help="update upstream repos and plugin")
@@ -489,7 +489,7 @@ def main() -> int:
     if DISTRO == "unknown":
         sys.exit("Unsupported system. Supported: Arch/EndeavourOS, Debian/Ubuntu/Kali, macOS.")
 
-    say(f"FlagForge on {DISTRO} ({platform.system()})" + (" [dry-run]" if DRY else ""))
+    say(f"CTF Forge on {DISTRO} ({platform.system()})" + (" [dry-run]" if DRY else ""))
 
     if args.verify:
         verify()
