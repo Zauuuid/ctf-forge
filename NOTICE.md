@@ -1,12 +1,11 @@
 # Third-party projects
 
-CTF Forge does not bundle the projects below. The installer downloads them from their
-original repositories at install time. Each keeps its own license and authorship.
+CTF Forge builds on the work below. Each project keeps its own license and authorship.
 
-| Project | Author | License | Source |
+| Project | Author | License | How it is used |
 |---|---|---|---|
-| ctf-skills | Lukasz Jagiello | MIT | https://github.com/ljagiello/ctf-skills |
-| ctf-kit | MysterionRise | MIT | https://github.com/MysterionRise/ctf-kit |
-| RsaCtfTool | RsaCtfTool contributors | MIT | https://github.com/RsaCtfTool/RsaCtfTool |
+| [ctf-skills](https://github.com/ljagiello/ctf-skills) | Lukasz Jagiello | MIT | Downloaded from its repository at install time and linked into the agent's skills directory. Not copied into this repository. |
+| [ctf-kit](https://github.com/MysterionRise/ctf-kit) | MysterionRise | MIT | The tool-runner scripts in `ctf_forge/kit` are derived from ctf-kit. Its license is in `ctf_forge/kit/LICENSE-ctf-kit`. Changes: moved out of the plugin layout so they run standalone through `ctf-forge kit`. |
+| [RsaCtfTool](https://github.com/RsaCtfTool/RsaCtfTool) | RsaCtfTool contributors | MIT | Downloaded at install time into `~/.ctf-forge`. |
 
-The tools installed through system package managers and pipx are covered by their own licenses.
+Tools installed through system package managers and pipx are covered by their own licenses.
