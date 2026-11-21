@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ctf-forge"
+version = "0.1.0"
+description = "Install and manage a complete CTF toolchain for AI coding agents"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [{ name = "ZauuuiD" }]
+keywords = ["ctf", "security", "agent-skills", "claude-code"]
+
+[project.scripts]
+ctf-forge = "ctf_forge.cli:main"
+
+[tool.setuptools]
+packages = ["ctf_forge"]
+
+[tool.setuptools.package-data]
+ctf_forge = ["kit/**/*", "vault_template/**/*"]
