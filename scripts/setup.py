@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""CTF Arsenal installer.
+"""FlagForge installer.
 
 Sets up, on Arch/EndeavourOS, Debian/Ubuntu/Kali or macOS:
   * system packages and CTF tooling
@@ -25,16 +25,16 @@ from pathlib import Path
 
 HOME = Path.home()
 ROOT = Path(__file__).resolve().parent.parent
-ARSENAL_HOME = HOME / ".ctf-arsenal"
-UPSTREAM_DIR = ARSENAL_HOME / "upstream"
+FORGE_HOME = HOME / ".flagforge"
+UPSTREAM_DIR = FORGE_HOME / "upstream"
 CLAUDE_DIR = HOME / ".claude"
 
 CTF_SKILLS_REPO = "https://github.com/ljagiello/ctf-skills.git"
 CTF_KIT_MARKETPLACE = "MysterionRise/ctf-kit"
 CTF_KIT_GIT = "git+https://github.com/MysterionRise/ctf-kit.git"
 
-BLOCK = ("# >>> ctf-arsenal >>>", "# <<< ctf-arsenal <<<")
-MD_BLOCK = ("<!-- >>> ctf-arsenal >>> -->", "<!-- <<< ctf-arsenal <<< -->")
+BLOCK = ("# >>> flagforge >>>", "# <<< flagforge <<<")
+MD_BLOCK = ("<!-- >>> flagforge >>> -->", "<!-- <<< flagforge <<< -->")
 
 FAILED: list[str] = []
 DRY = False
@@ -255,7 +255,7 @@ def install_rsactftool() -> None:
     if have("RsaCtfTool") or have("rsactftool"):
         say("  = RsaCtfTool")
         return
-    base = ARSENAL_HOME / "RsaCtfTool"
+    base = FORGE_HOME / "RsaCtfTool"
     if not base.exists() and not run(
         ["git", "clone", "--depth", "1", "https://github.com/RsaCtfTool/RsaCtfTool.git", str(base)]
     ):
@@ -467,7 +467,7 @@ def verify() -> None:
 
 def main() -> int:
     global DRY, DISTRO
-    ap = argparse.ArgumentParser(description="CTF Arsenal installer")
+    ap = argparse.ArgumentParser(description="FlagForge installer")
     ap.add_argument("--full", action="store_true", help="also install heavy extras")
     ap.add_argument("--dry-run", action="store_true", help="print actions, change nothing")
     ap.add_argument("--update", action="store_true", help="update upstream repos and plugin")
@@ -489,7 +489,7 @@ def main() -> int:
     if DISTRO == "unknown":
         sys.exit("Unsupported system. Supported: Arch/EndeavourOS, Debian/Ubuntu/Kali, macOS.")
 
-    say(f"CTF Arsenal on {DISTRO} ({platform.system()})" + (" [dry-run]" if DRY else ""))
+    say(f"FlagForge on {DISTRO} ({platform.system()})" + (" [dry-run]" if DRY else ""))
 
     if args.verify:
         verify()
